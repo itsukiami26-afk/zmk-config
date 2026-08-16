@@ -1,13 +1,13 @@
-name: Build ZMK Firmware
+name: Build Keychron B11 Pro Firmware
 on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4 # 👈 Changed to v4 to stop the Node.js 24 crash
+      - name: Checkout user config
+        uses: actions/checkout@v4
 
-      - name: Cache west modules
+      - name: Cache ZMK modules
         uses: actions/cache@v4
         with:
           path: |
@@ -16,21 +16,21 @@ jobs:
             zephyr
             bootloader
             zmk
-          key: ${{ runner.os }}-west-v4-${{ hashFiles('**/west.yml') }}
+          key: ${{ runner.os }}-zmk-b11-${{ hashFiles('**/west.yml') }}
 
-      - name: Initialize ZMK Workspace
+      - name: Pull Official Keychron ZMK Engine
         run: |
           pip3 install west
           west init -m https://github.com --mr main
           west update
           west zephyr-export
 
-      - name: Build Firmware
+      - name: Compile B11 Pro Layout
         run: |
-          west build -s zmk/app -b corne_v3_left
+          west build -s zmk/app -b keychron_b11_pro -- -DSHIELD=keychron_b11_pro
 
-      - name: Upload Artifact
+      - name: Archive Firmware Result
         uses: actions/upload-artifact@v4
         with:
-          name: zmk-firmware
+          name: b11_pro_firmware
           path: build/zephyr/zmk.uf2
