@@ -9,7 +9,7 @@ jobs:
       image: zmkfirmware/zmk-build-arm:2.5
     name: Build
     steps:
-      - name: Checkout
+      - name: Checkoutå√
         uses: actions/checkout@v2
       - name: Cache west modules
         uses: actions/cache@v4
