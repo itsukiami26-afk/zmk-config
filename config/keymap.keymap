@@ -2,6 +2,11 @@
 #include <dt-bindings/zmk/keys.h>
 
 / {
+    // この一連の記述があることで、エディタは「B11 Pro用のデータだ」と100%認識します
+    chosen {
+        zmk,matrix-transform = &default_transform;
+    };
+
     keymap {
         compatible = "zmk,keymap";
         default_layer {
